@@ -21,35 +21,29 @@ const auth = (...requiredRoles:any) => {
       token,
       config.access_secret as string,
     ) as JwtPayload;
+    // console.log(decoded)
 
-    const { id, iat } = decoded;
+    const { role,email, iat } = decoded;
 
     // checking if the user is exist
-    const user = await User.findById(id);
-    console.log(user)
+    const user = await User.findOne({email});
+    // console.log(user)
 
-    // if (!user) {
-    //   throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
-    // }
-
-
+    if (!user) {
+      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+    }
 
 
 
+    if (requiredRoles && !requiredRoles.includes(role)) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        'You are not authorized  !',
+      );
+    }
 
-    
-
-   
-
-    // if (requiredRoles && !requiredRoles.includes(role)) {
-    //   throw new AppError(
-    //     httpStatus.UNAUTHORIZED,
-    //     'You are not authorized  hi!',
-    //   );
-    // }
-
-    // req.user = decoded as JwtPayload & { role: string };
-    // next();
+    req.user = decoded as JwtPayload & { role: string };
+    next();
   });
 };
 

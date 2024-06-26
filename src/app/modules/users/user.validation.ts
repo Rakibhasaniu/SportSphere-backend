@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 const userValidationSchema = z.object({
   body: z.object({
-    username: z.string({ required_error: 'usename is required' }),
     name: z.string({ required_error: 'name is required' }),
     email: z
       .string({ required_error: 'email is required' })

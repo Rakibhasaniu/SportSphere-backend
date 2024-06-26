@@ -1,20 +1,20 @@
 import httpStatus from "http-status";
 import { AppError } from "../../errors/AppError";
-import { TLoginUser, TUser } from "./user.interface";
-import { User } from "./user.model";
 import bcrypt from 'bcrypt';
 import { createToken } from "./user.utils";
 import { config } from "../../config";
+import TUser, { TUserLogin } from "./user.interface";
+import { User } from "./user.model";
 
 
-const registerUserIntoDB:any =async(payload:TUser) => {
+const registerUserIntoDB =async(payload:TUser) => {
     const result = await User.create(payload);
     return result;
 }
 
-const loginUser = async(payload:TLoginUser) => {
-    const {username,password}=payload;
-    const user = await User.findOne({username});
+const loginUser = async(payload:TUserLogin) => {
+    const {email,password}=payload;
+    const user = await User.findOne({email});
     if(!user){
         throw new AppError(httpStatus.FORBIDDEN,'User Not Found');
     }
@@ -24,8 +24,8 @@ const loginUser = async(payload:TLoginUser) => {
     }
 
     const jwtPayload = {
-        id:user?._id,
-        username:user?.username
+        role:user?.role,
+        email:user?.email
 
     }
     const accessToken = createToken(jwtPayload,config.access_secret as string,'30d')

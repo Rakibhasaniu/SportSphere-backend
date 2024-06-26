@@ -3,7 +3,7 @@ import { ErrorRequestHandler } from 'express'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let message = 'something went Wrong'
-  let errorMessage = 'something went Wrong'
+  let errorMessage = err.message
   let statusCode = 500
   let error = err
   let stack = error?.stack

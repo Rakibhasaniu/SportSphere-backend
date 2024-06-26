@@ -43,11 +43,7 @@ const productSchema = new Schema({
   weight: {
     type: Number,
   },
-//   addedBy: {
-//     type: Schema.Types.ObjectId,
-//     required: true,
-//     ref: 'user',
-//   },
+
 },
 {
   timestamps:true

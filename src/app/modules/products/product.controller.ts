@@ -16,6 +16,7 @@ const addProduct  = catchAsync(async(req:Request,res:Response)=> {
     })
 })
 const getAllProduct  = catchAsync(async(req:Request,res:Response)=> {
+    // console.log(req.user)
     
     const result = await ProductServices.getAllProductFromDB();
 
@@ -26,9 +27,22 @@ const getAllProduct  = catchAsync(async(req:Request,res:Response)=> {
         data:result
     })
 })
+const getSingleProduct  = catchAsync(async(req:Request,res:Response)=> {
+    // console.log(req.user)
+    const id = req.params.id;
+    
+    const result = await ProductServices.getSingleProductFromDB(id);
+
+    sendResponse(res,{
+        success:true,
+        statusCode:201,
+        message:"Product Retrieve Successfully",
+        data:result
+    })
+})
 const updateProduct  = catchAsync(async(req:Request,res:Response)=> {
     const id=req.params.id
-    console.log(id)
+    // console.log(id)
     
     const result = await ProductServices.updateProductFromDB(id,req.body);
 
@@ -39,10 +53,41 @@ const updateProduct  = catchAsync(async(req:Request,res:Response)=> {
         data:result
     })
 })
+const deleteOne  = catchAsync(async(req:Request,res:Response)=> {
+    const id=req.params.id
+    // console.log(id)
+    
+    const result = await ProductServices.deleteOne(id);
+
+    sendResponse(res,{
+        success:true,
+        statusCode:201,
+        message:"Product Deleted Successfully",
+        data:result
+    })
+})
+const getProductByValues  = catchAsync(async(req:Request,res:Response)=> {
+    // const id=req.params.id
+    // console.log(id)
+    
+    const result = await ProductServices.getProductsValues();
+
+    sendResponse(res,{
+        success:true,
+        statusCode:201,
+        message:"Product Fetched by values Successfully",
+        data:result
+    })
+})
+
+
 
 export const ProductController = {
     addProduct,
     getAllProduct,
-    updateProduct
+    updateProduct,
+    getSingleProduct,
+    deleteOne,
+    getProductByValues
 
 }

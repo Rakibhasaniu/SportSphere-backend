@@ -14,6 +14,12 @@ const getAllProductFromDB = async() => {
 
 
 }
+const getSingleProductFromDB = async(id:string) => {
+    const result = await Product.findById(id);
+    return result;
+
+
+}
 const updateProductFromDB = async(id:string,payload:any) => {
     // const result = await Product.findById(id)
     // console.log(result)
@@ -25,11 +31,32 @@ const deleteOne = async (id: string) => {
   
     return result
   }
+  const getProductsValues = async () => {
+    const result = await Product.aggregate([
+        { $match: { _id: { $type: "objectId" } } },
+      {
+        $facet: {
+          sportType: [
+            { $unwind: '$sportType' },
+            { $group: { '_id': '$sportType' } },
+          ],
+          brand: [{ $unwind: '$brand' }, { $group: { _id: '$brand' } }],
+          material: [{ $unwind: '$material' }, { $group: { _id: '$material' } }],
+          size: [{ $unwind: '$size' }, { $group: { _id: '$size' } }],
+          color: [{ $unwind: '$color' }, { $group: { _id: '$color' } }],
+          
+        },
+      },
+    ]);
+    return result;
+  };
 export const ProductServices = {
     addProductIntoDB,
     getAllProductFromDB,
     updateProductFromDB,
-    deleteOne
+    deleteOne,
+    getSingleProductFromDB ,
+    getProductsValues
 
 
 }
