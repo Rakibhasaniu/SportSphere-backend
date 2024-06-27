@@ -42,7 +42,7 @@ const createSalesIntoDB = async(payload:TSales) => {
 
 const getSalesFromDB = async(query:string | null) => {
     let date = null;
-    console.log("Query:", query);
+    // console.log("Query:", query);
     if (query && query === 'daily') {
       date = new Date();
       date.setDate(date.getDate() - 1);
@@ -56,7 +56,7 @@ const getSalesFromDB = async(query:string | null) => {
       date = new Date();
       date.setFullYear(date.getFullYear() - 1);
     }
-    console.log("Calculated Date:", date); 
+    // console.log("Calculated Date:", date); 
     let queryParam = {};
     if (date) {
       queryParam = {
@@ -66,14 +66,20 @@ const getSalesFromDB = async(query:string | null) => {
         },
       };
     }
-    console.log(queryParam)
+    // console.log(queryParam)
     const sales = await Sales.find(queryParam).populate('product');
-    console.log("Sales Result:", sales); 
+    // console.log("Sales Result:", sales); 
     return sales;
+}
+
+const deleteSales = async(id:string) => {
+  const sales = await Sales.findByIdAndDelete(id);
+  return sales;
 }
 
 export const SalesServices = {
     createSalesIntoDB,
     getSalesFromDB,
+    deleteSales,
 
 }

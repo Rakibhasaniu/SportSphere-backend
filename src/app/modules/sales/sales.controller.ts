@@ -27,9 +27,21 @@ const getSales  = catchAsync(async(req:Request,res:Response)=> {
         data:result
     })
 })
+const deleteSales  = catchAsync(async(req:Request,res:Response)=> {
+    const id = req.params.id;
+    const result = await SalesServices.deleteSales(id);
+
+    sendResponse(res,{
+        success:true,
+        statusCode:200,
+        message:"Sales Deleted successfully",
+        data:result
+    })
+})
 
 export const SalesController = {
     addSales,
     getSales,
+    deleteSales
 
 }
