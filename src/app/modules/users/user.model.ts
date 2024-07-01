@@ -1,7 +1,8 @@
 import mongoose, { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { config } from '../../config';
-import TUser from './user.interface';
+import { TUser } from './user.interface';
+
 
 
 const userSchema = new Schema<TUser>(
@@ -22,7 +23,8 @@ const userSchema = new Schema<TUser>(
     },
     role: {
       type: String,
-      default: 'user',
+      enum: ['admin', 'manager', 'seller'],
+      default: 'seller',
     },
   },
   {

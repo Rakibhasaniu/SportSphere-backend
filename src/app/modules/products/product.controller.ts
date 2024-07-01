@@ -66,19 +66,31 @@ const deleteOne  = catchAsync(async(req:Request,res:Response)=> {
         data:result
     })
 })
-const getProductByValues  = catchAsync(async(req:Request,res:Response)=> {
-    // const id=req.params.id
+const deleteManyProducts = catchAsync(async (req: Request, res: Response) => {
+    const id = req.body.ids;
     // console.log(id)
-    
-    const result = await ProductServices.getProductsValues();
-
-    sendResponse(res,{
-        success:true,
-        statusCode:201,
-        message:"Product Fetched by values Successfully",
-        data:result
+  
+    const result = await ProductServices.deleteProducts(id)
+    sendResponse(res, {
+      success: true,
+      statusCode: 201,
+      message: 'Products deleted successfully',
+      data: result,
     })
-})
+  })
+// const getProductByValues  = catchAsync(async(req:Request,res:Response)=> {
+//     // const id=req.params.id
+//     // console.log(id)
+    
+//     const result = await ProductServices.getProductsValues();
+
+//     sendResponse(res,{
+//         success:true,
+//         statusCode:201,
+//         message:"Product Fetched by values Successfully",
+//         data:result
+//     })
+// })
 
 
 
@@ -88,6 +100,7 @@ export const ProductController = {
     updateProduct,
     getSingleProduct,
     deleteOne,
-    getProductByValues
+    // getProductByValues,
+    deleteManyProducts
 
 }

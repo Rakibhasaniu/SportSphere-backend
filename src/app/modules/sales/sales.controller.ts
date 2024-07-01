@@ -5,7 +5,7 @@ import sendResponse from "../../utils/sendResponse";
 
 const addSales  = catchAsync(async(req:Request,res:Response)=> {
     const payload = req.body;
-    const result = await SalesServices.createSalesIntoDB(payload);
+    const result = await SalesServices.createSalesIntoDB(req,payload);
 
     sendResponse(res,{
         success:true,

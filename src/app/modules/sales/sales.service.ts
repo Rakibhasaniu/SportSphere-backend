@@ -4,10 +4,15 @@ import { Product } from "../products/product.model";
 import TSales from "./sales.interface";
 import mongoose from "mongoose";
 import { Sales } from "./sales.model";
+import { Request } from "express";
+import { User } from "../users/user.model";
 
 
 
-const createSalesIntoDB = async(payload:TSales) => {
+const createSalesIntoDB = async(req:Request,payload:TSales) => {
+  // console.log(req.user)
+  const user = await User.find({email:req.user.email})
+  console.log(user)
     const product = await Product.findById(payload.product);
     if(!product){
         throw new AppError(httpStatus.NOT_FOUND,"Product not found");
@@ -19,6 +24,7 @@ const createSalesIntoDB = async(payload:TSales) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
+        payload.buyerName=user[0].name;
         const result = await Sales.create(payload);
         if(!result){
             throw new AppError(httpStatus.NOT_ACCEPTABLE,'Failed To Create Sales')

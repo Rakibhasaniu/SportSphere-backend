@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
 
@@ -50,13 +51,19 @@ const deleteOne = async (id: string) => {
     ]);
     return result;
   };
+  const deleteProducts = async (ids: { ids: [Types.ObjectId] }) => {
+    const result = await Product.deleteMany({ _id: { $in: ids } })
+  
+    return result
+  }
 export const ProductServices = {
     addProductIntoDB,
     getAllProductFromDB,
     updateProductFromDB,
     deleteOne,
     getSingleProductFromDB ,
-    getProductsValues
+    getProductsValues,
+    deleteProducts
 
 
 }
