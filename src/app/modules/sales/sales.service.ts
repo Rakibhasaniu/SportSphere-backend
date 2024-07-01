@@ -12,7 +12,7 @@ import { User } from "../users/user.model";
 const createSalesIntoDB = async(req:Request,payload:TSales) => {
   // console.log(req.user)
   const user = await User.find({email:req.user.email})
-  console.log(user)
+  // console.log(user)
     const product = await Product.findById(payload.product);
     if(!product){
         throw new AppError(httpStatus.NOT_FOUND,"Product not found");
