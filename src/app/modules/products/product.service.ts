@@ -10,22 +10,22 @@ const addProductIntoDB = async(payload:TProduct) => {
 
 
 }
-const getAllProductFromDB = async(req:Request) => {
-  const pageM = Number(req.query.page) ? Number(req.query.page) - 1 : 0;
-  const limitM = Number(req.query.limit) ? Number(req.query.limit) : 5;
-  const search = req.query.search || "";
-  const sort = req.query.sort ? req.query.sort.toString() : "price";
-  // let genre = req.query.genre || "All";
+const getAllProductFromDB = async(query:Record<string,unknown>) => {
+  // const page = Number(req.query.page) ? Number(req.query.page) - 1 : 0;
+  // const limit = Number(req.query.limit) ? Number(req.query.limit) : 5;
+  // const searchTerm = req.query.searchTerm || "";
+  // const sort = req.query.sort ? req.query.sort.toString() : "price";
+  // // let genre = req.query.genre || "All";
 
-  const searchCriteria = {
-    $or: [
-      { name: { $regex: search, $options: "i" } },
-      { sportsType: { $regex: search, $options: "i" } },
-      { condition: { $regex: search, $options: "i" } },
-      { brand: { $regex: search, $options: "i" } },
+  // const searchCriteria = {
+  //   $or: [
+  //     { name: { $regex: searchTerm, $options: "i" } },
+  //     { sportsType: { $regex: searchTerm, $options: "i" } },
+  //     { condition: { $regex: searchTerm, $options: "i" } },
+  //     { brand: { $regex: searchTerm, $options: "i" } },
       
-    ]
-  };
+  //   ]
+  // };
   // let sortBy: { [key: string]: SortOrder  } = {};
   // const sortParts = sort.split(':');
   // if (sortParts.length === 2) {
@@ -34,7 +34,7 @@ const getAllProductFromDB = async(req:Request) => {
   //   sortBy[sort] = "asc";
   // }
   // console.log(sortBy)
-    const result = await Product.find(searchCriteria).skip(page * limit);
+    const result = await Product.find();
     return result;
 }
 const getSingleProductFromDB = async(id:string) => {

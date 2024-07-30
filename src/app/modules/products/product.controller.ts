@@ -18,7 +18,7 @@ const addProduct  = catchAsync(async(req:Request,res:Response)=> {
 const getAllProduct  = catchAsync(async(req:Request,res:Response)=> {
     // console.log(req.user)
     
-    const result = await ProductServices.getAllProductFromDB(req);
+    const result = await ProductServices.getAllProductFromDB(req.query);
 
     sendResponse(res,{
         success:true,
