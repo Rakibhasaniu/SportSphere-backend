@@ -34,8 +34,43 @@ const getAllProductFromDB = async(query:Record<string,unknown>) => {
   //   sortBy[sort] = "asc";
   // }
   // console.log(sortBy)
-    const result = await Product.find();
-    return result;
+  const queryObj = {...query};
+  let searchTerm = '';
+  if(query?.searchTerm){
+    searchTerm = query.searchTerm as string;
+  }
+  const searchQuery =Product.find({
+    $or:['name','sportsType','brand'].map((field) => ({
+      [field]:{$regex:searchTerm,$options:'i'}
+    }))
+  });
+
+  const excludeFields = ['searchTerm','sort','limit','page']
+
+  excludeFields.forEach((el) => delete queryObj[el]);
+    const filter =  searchQuery.find(queryObj);
+
+    let sort = '-createdAt'
+    if(query?.sort){
+      sort=query?.sort as string;
+    }
+    const sortQuery =  filter.sort(sort)
+    let page=1;
+    let limit = 10;
+    let skip=0;
+    if(query?.limit){
+      limit = Number(query.limit);
+    }
+    if(query?.page){
+      page = Number(query.page) ;
+      skip=(page - 1)*limit;
+    }
+    const paginate =  sortQuery.skip(skip)
+    
+    const limitQuery = await paginate.limit(limit)
+
+    return limitQuery;
+    // return result;
 }
 const getSingleProductFromDB = async(id:string) => {
     const result = await Product.findById(id);
